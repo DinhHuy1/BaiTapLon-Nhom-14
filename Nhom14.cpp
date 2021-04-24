@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include <stdlib.h>
+#include <windows.h>
 
 typedef struct {
 	char Ten[28];
@@ -50,9 +51,8 @@ void HoanDoi (car_st *car1, car_st *car2)
 	*car1 = *car2;
 	*car2 = temp;
 }
-
 void SapXep (car_st arr[3]){
-    // sắp xếp các xe theo thể loại từ A-> Z
+    // Sap xep cac xe theo the loai từ A-> Z
     int i,j;
     for (i = 0; i < 2; i++){
         for (j = i + 1; j < 3; j++){
@@ -65,35 +65,35 @@ void SapXep (car_st arr[3]){
             }
         }
     }
-
-    // Xuất ra bảng in
+    // Xuat ra bang in
     ToaDoBangIn();
 	for(i = 0; i < 3; i++) {
 		HangIn(arr, i);
 	}
-
-    // Tim minYear, maxYear
+}
+void ThongKevaHienThi (car_st arr[3]){
+	// Tim minYear, maxYear
+	int i;
     int minYear = arr[0].Nam, maxYear = arr[0].Nam;
     for (i = 1; i < 3; i++){
         if(arr[i].Nam < minYear) minYear = arr[i].Nam;
         if(arr[i].Nam > maxYear) maxYear = arr[i].Nam;
     }
-
-    // Đếm số liệu thống kê
+    // Ðem so lieu thong ke
     int* thongke = (int*)calloc(maxYear + 1, sizeof(int));
 	for(i = 0; i < 3; i++) {
 		int yearValue = arr[i].Nam;
 		thongke[yearValue] += 1;
 	}
 
-    // Xuất sô liệu thống kê
+    // Xuat so lieu thong ke
     printf("\n");
     for (i = minYear; i <= maxYear; i++){
         if(thongke[i] == 1){
-            printf("Năm %d có %d chiếc xe\n", i, thongke[i]);
+            printf("Nam %d có %d chiếc xe\n", i, thongke[i]);
         }
         else if (thongke[i] > 1){
-             printf("Năm %d có %d chiếc xe\n", i, thongke[i]);
+             printf("Nam %d có %d chiếc xe\n", i, thongke[i]);
         }
     }
     printf("\n");
@@ -101,13 +101,13 @@ void SapXep (car_st arr[3]){
 }
 
 void TimXeTheoLoai (car_st arr[3]){
-    // Nhập từ bàn phím
+    // Nhap tu ban phim
     char TheLoai[10];
     printf("\nNhap the loai can tim : ");
     gets(TheLoai);
     printf("\n");
     
-    // Tìm kiếm
+    // Tim kiem
     int i = 0, dem = 0;
 	for (i = 0; i < 3; i++) {
 		if (strcmp(arr[i].TheLoai, TheLoai) == 0) {
@@ -131,39 +131,58 @@ void saveToFile (car_st *p)
 
 	fclose(fp);
 }
+void SetColor(WORD color){ 
+    HANDLE hConsoleOutput;
+    hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO screen_buffer_info;
+    GetConsoleScreenBufferInfo(hConsoleOutput, &screen_buffer_info);
+    WORD wAttributes = screen_buffer_info.wAttributes;
+    color &= 0x000f;
+    wAttributes &= 0xfff0; wAttributes |= color;
+    SetConsoleTextAttribute(hConsoleOutput, wAttributes);
+}
+
 int main(){
     car_st carList[3];
     int entry;
     while(1) {
 		// Menu
-		printf("\n");
-		printf("1. Nhap du lieu cua tung chiec xe\n");
-		printf("2. Sap xep, thong kê va hien thi thong tin chi tiet cua tung chiec xe theo the loai (A->Z)\n");
-		printf("3. Tim chiec xe theo the loai\n");
-		printf("4. Ghi vao tap tin nhi phan car.dat\n");
-		printf("5. Thoat\n");
+		SetColor(10);
+		system("cls");
+		printf(" \n\n\n\n\n\n");
+		printf("                                ******************************************************************\n");
+        printf("                                *                 CHUONG TRINH QUAN LY XE HOI                    *\n");
+        printf("                                *      1. Nhap du lieu cua tung chiec xe                         *\n");
+        printf("                                *      2. Sap xep thong tin                                      *\n");
+        printf("                                *      3. Thong ke va hien thi thong tin chi tiet                *\n");
+        printf("                                *      4. Tim chiec xe theo the loai                             *\n");
+        printf("                                *      5. Ghi vao tap tin nhi phan car.dat                       *\n");
+        printf("                                *      6. Thoat                                                  *\n");
+        printf("                                ******************************************************************\n");
 
-		// Nhập 1 số tương ứng với menu:
-		printf("\nNhập một số từ 1 đến 5 : ");
+		// Nhap 1 so tương ung voi menu:
+		printf("\nNhap mot so tu 1 den 6 : ");
 		while(1) {
-			if(!scanf("%d", &entry) || entry < 1 || entry > 5) {
+			if(!scanf("%d", &entry) || entry < 1 || entry > 6) {
 				fflush(stdin);
-				printf("Nhập một số từ 1 đến 5 : ");
+				printf("Nhap mot so tu 1 den 6 : ");
 			} else {
 				fflush(stdin);
 				break;
 			}
 		}
 
-		// Xử lý lựa chọn
+		// Xu ly lua chon
 		if (entry == 1) {
-			NhapDuLieu(carList);
+			NhapDuLieu (carList);
 		} else if (entry == 2) {
-			SapXep(carList);
+			SapXep (carList);
 		} else if (entry == 3) {
-			TimXeTheoLoai(carList);
+			ThongKevaHienThi (carList);
 		} else if (entry == 4) {
-			saveToFile(carList);
+			TimXeTheoLoai (carList);
+		} else if (entry == 5) {
+			saveToFile (carList);
 		} else {
 			break;
 		}

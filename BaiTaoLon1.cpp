@@ -2,6 +2,7 @@
 #include<string.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <conio.h>
 
 struct car_st{
 	char Ten[28];
@@ -17,10 +18,9 @@ void xuat(XE xe);
 void xuatN( XE a[], int n);
 void HoanDoi (XE *car1, XE *car2);
 void SapXep (XE a[], int n);
-void ThongKevaHienThi (XE a[], int n);
 void TimXeTheoLoai (XE a[], int n);
 void xuatFile(XE a[], int n, char fileName[]);
-
+int Menu();
 int main(){
 	car_st carList[10];
 	system("color 0A");
@@ -28,13 +28,13 @@ int main(){
 }
 
 void NhapDuLieu (XE &xe){
-        printf("+ Ten: ");
+        printf("\n+ Ten: ");
         gets (xe.Ten);
-        printf("+ TheLoai: ");
+        printf("\n+ TheLoai: ");
         gets (xe.TheLoai);
-        printf("+ GiaTien: ");
+        printf("\n+ GiaTien: ");
         scanf ("%d", &xe.GiaTien);
-        printf("+ Nam: ");
+        printf("\n+ Nam: ");
         scanf ("%d", &xe.Nam);
         fflush(stdin);
 }
@@ -50,7 +50,7 @@ void nhapN( XE a[], int n){
 
 void xuat(XE xe){
     printf("\nTen Xe: %s", xe.Ten);
-    printf("\nThe Loai: %s", xe.Theloai);
+    printf("\nThe Loai: %s", xe.TheLoai);
     printf("\nGia Tien: %d", xe.GiaTien);
     printf("\nNam San Xuat: %d", xe.Nam);
 }
@@ -79,34 +79,6 @@ void SapXep (XE a[], int n){
         }
     }
 }
-void ThongKevaHienThi (XE a[], int n){
-	// Tim minYear, maxYear
-	int i;
-    int minYear = a[0].Nam, maxYear = a[0].Nam;
-    for (i = 1; i < 3; i++){
-        if(a[i].Nam < minYear) minYear = a[i].Nam;
-        if(a[i].Nam > maxYear) maxYear = a[i].Nam;
-    }
-    // Ðem so lieu thong ke
-    int* thongke = (int*)calloc(maxYear + 1, sizeof(int));
-	for(i = 0; i < n; i++) {
-		int yearValue = a[i].Nam;
-		thongke[yearValue] += 1;
-	}
-
-    // Xuat so lieu thong ke
-    printf("\n");
-    for (i = minYear; i <= maxYear; i++){
-        if(thongke[i] == 1){
-            printf("Nam %d co %d chiec xe\n", i, thongke[i]);
-        }
-        else if (thongke[i] > 1){
-             printf("Nam %d co %d chiec xe\n", i, thongke[i]);
-        }
-    }
-    printf("\n");
-	free(thongke);
-}
 
 void TimXeTheoLoai (XE a[], int n){
     // Nhap tu bàn phím
@@ -119,7 +91,7 @@ void TimXeTheoLoai (XE a[], int n){
     int i = 0, dem = 0;
 	for (i = 0; i < n; i++) {
 		if (strcmp(a[i].TheLoai, TheLoai) == 0) {
-			xuatN(a[i]);
+			xuatN(a, n);
 			dem++;
 		}
 	}
@@ -150,13 +122,12 @@ while(true){
         system("cls");
         printf(" \n\n\n\n\n\n");
         printf("                                ****************************************\n");
-        printf("                                *         CHUONG TRINH QUAN LY XE      *\n");
+        printf("                                *        CHUONG TRINH QUAN LY XE       *\n");
         printf("                                *      1. Nhap danh sach xe            *\n");
         printf("                                *      2. Xuat danh sach xe            *\n");
         printf("                                *      3. Sap xep danh sach xe         *\n");
-        printf("                                *      4. Thong ke va hien thi         *\n");
-        printf("                                *      5. Xuat DS xe ra file           *\n");
-        printf("                             	*      6. Tim kiem xe                  *\n");
+        printf("                                *      4. Xuat DS xe ra file           *\n");
+        printf("                             	*      5. Tim kiem xe                  *\n");
         printf("                                *      0. Thoat                        *\n");
         printf("                                ****************************************\n");
         printf("                                **       Nhap lua chon cua ban        **\n");
@@ -183,7 +154,7 @@ while(true){
             case 3:
                 if(daNhap){
                     printf("\nBan da chon sap xep XE theo the loai!");
-                    sapxep(a, n);
+                    SapXep(a, n);
                     xuatN(a, n);
                 }else{
                     printf("\nNhap DS XE truoc!!!!");
@@ -192,16 +163,6 @@ while(true){
                 getch();
                 break;
             case 4:
-                if(daNhap){
-                    printf("\nBan da chon thong ke!");
-                    ThongKevaHienThi (a,n);
-                }else{
-                    printf("\nNhap DS SV truoc!!!!");
-                }
-                printf("\nBam phim bat ky de tiep tuc!");
-                getch();
-                break;
-            case 5:
                 if(daNhap){
                     printf("\nBan da chon xuat DS XE!");
                     xuatFile(a, n, fileName);
@@ -212,10 +173,10 @@ while(true){
                 printf("\nBam phim bat ky de tiep tuc!");
                 getch();
                 break;
-            case 6:
+            case 5:
             	if(daNhap){
             		printf("\nBan da chon tim kiem thong tin xe");
-            		timkiem(a, n);
+            		TimXeTheoLoai(a, n);
             	}else{
             		printf("\nNhap DS SV truoc!!!!");
 				}

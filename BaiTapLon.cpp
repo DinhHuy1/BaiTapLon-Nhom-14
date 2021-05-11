@@ -1,86 +1,127 @@
 #include<stdio.h>
 #include<string.h>
-#include<stdlib.h>
-#define max 100
-struct ThucUong_st{
-	char DoUong[50];
-	int GiaSanPham;
-	char size[5];
-	int SoLuong;
+#include <stdlib.h>
+#include <windows.h>
+#include <conio.h>
+
+struct car_st{
+	char Ten[28];
+	char TheLoai[25];
+	int GiaTien;
+	int Nam;
 };
-typedef ThucUong_st THUCUONG;
-void NhapThucUong(THUCUONG &tu);
-void NhapDanhSachThucUong(THUCUONG tu[],int &SoLoai);
-void XuatThucUong(THUCUONG &tu);
-void XuatDanhSachThucUong(THUCUONG tu[], int SoLoai);
-void ThemThucUong(THUCUONG tu[],int &SoLoai,THUCUONG &x,int k);
-void XoaMotThucUong(THUCUONG tu[], int SoLoai);
-void TimThucUong(THUCUONG tu[], int SoLoai, char c[]);
-void hienthiThongtinTheoChieuNgang(THUCUONG tu[], int SoLoai);
-void ThanhToan(THUCUONG tu[], int SoLoai);
-void LuuFile(THUCUONG *tu, int SoLoai);
-void NhapThucUong(THUCUONG &tu)
-{
-	fflush(stdin);
-	printf ("\n   Chon thuc uong : ");
-	gets(tu.DoUong);
-	printf("\n   Gia cua thuc uong La:");
-	scanf("%d",&tu.GiaSanPham);
-	printf("\n   Cua hang co size m: la nho , l: la lon");
-	printf("\n   Kich co thuc uong : ");
-    scanf("%s",&tu.size);
-	printf ("\n   So luong thuc uong la : ");
-	scanf("%d",&tu.SoLuong);
+typedef car_st XE;
+
+void NhapDuLieu (car_st &xe);
+void NhapXe( XE a[], int n);
+void xuat(XE xe);
+void XuatXe( XE a[], int n);
+void SapXepvaHienThi (XE a[], int n);
+void TimXeTheoLoai (XE a[], int n);
+void XoaMotXe(XE a[], int n);
+void xuatFile(XE a[], int n, char fileName[]);
+int Menu();
+int main(){
+	car_st carList[10];
+	system("color 0A");
+	Menu();
 }
-void NhapDanhSachThucUong(THUCUONG tu[],int &SoLoai)
-{
-	printf("\n********** DANH SACH THUC UONG **********");
-	for (int i=0; i<SoLoai; i++)
-	{
-		printf("\nThuc uong thu %d la: ",i+1);
-		NhapThucUong(tu[i]);
+
+void NhapDuLieu (XE &xe){
+        printf("\n+ Ten: ");
+		fflush(stdin);
+        gets (xe.Ten);
+        printf("\n+ TheLoai: ");
+        gets (xe.TheLoai);
+        printf("\n+ GiaTien: ");
+        scanf ("%d", &xe.GiaTien);
+        printf("\n+ Nam: ");
+        scanf ("%d", &xe.Nam);
+        fflush(stdin);
+}
+
+void NhapXe( XE a[], int n){
+    printf("\n____________________________________\n");
+    for(int i = 0; i < n; ++i){
+        printf("\nNhap Xe thu %d:", i+1);
+        NhapDuLieu(a[i]);
+    }
+    printf("\n____________________________________\n");
+}
+
+void xuat(XE xe){
+    printf("\nTen Xe: %s", xe.Ten);
+    printf("\nThe Loai: %s", xe.TheLoai);
+    printf("\nGia Tien: %d", xe.GiaTien);
+    printf("\nNam San Xuat: %d", xe.Nam);
+}
+
+void XuatXe( XE a[], int n){
+    printf("\n____________________________________\n");
+    for(int i = 0;i < n; ++i){
+        printf("\nThong tin XE thu %d:", i+1);
+        xuat(a[i]);
+    }
+    printf("\n____________________________________\n");
+}
+
+
+void SapXepvaHienThi (XE a[], int n){
+    // Sap xep cac xe theo nam tu A-> Z
+    int i,j;
+    XE tmp;
+    for(int i = 0;i < n;++i){
+        for(int j = i+1; j < n; ++j){
+            if(a[i].Nam < a[j].Nam){
+                tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+            }
+        }
+    }
+    // Hien Thi Thong Tin
+    printf("	||%-20s ||%-20s ||%-20s ||%-30s \n", "Ten", "The Loai", "Gia Tien", "Nam" );
+		for (int i=0; i<n; i++){
+		printf("	||%-20s ||%-20s ||%-20d	 ||%-30d \n",a[i].Ten, a[i].TheLoai, a[i].GiaTien, a[i].Nam);
+	}
+    
+}
+
+void TimXeTheoLoai (XE a[], int n){
+    // Nhap tu bàn phím
+    char TheLoai[10];
+    printf("\nNhap the loai can tim : ");
+    fflush(stdin);
+    gets(TheLoai);
+    printf("\n");
+    
+    // Tìm kiem
+    int i = 0, dem = 0;
+	for (i = 0; i < n; i++) {
+		if (strcmp(a[i].TheLoai, TheLoai) == 0) {
+			xuat(a[i]);
+			dem++;
+		}
+	}
+	if (dem == 0) {
+		printf("\nKhong co chiec xe thuoc the loai nay\n");
 	}
 }
-void XuatThucUong(THUCUONG &tu)
-{
-	printf ("\n   Ten thuc uong la: %s",tu.DoUong);	
-	printf("\n    Gia thuc uong la : %d",tu.GiaSanPham);
-	printf("\n    Kich co thuc uong la: %s",tu.size);
-    printf("\n    So Luong thuc uong la : %d ",tu.SoLuong);
-}
-void XuatDanhSachThucUong(THUCUONG tu[], int SoLoai)
-{
-	for(int i=0; i<SoLoai ; i++)
-	{
-        printf("\nThuc uong thu %d la: ",i+1);
-		XuatThucUong(tu[i]);
-	}
-}
-void ThemThucUong(THUCUONG tu[],int &SoLoai,THUCUONG &x,int k)
-{
-	int i;
-	for( i=SoLoai;i>k;i--)
-	{
-		tu[i]=tu[i-1];
-	}
-	tu[k]=x;
-	SoLoai++;
-}
-void XoaMotThucUong(THUCUONG tu[], int SoLoai)
-{
+
+void XoaMotXe(XE a[], int n){
 	char c[50];
-	printf("\nCho biet ten do uong can xoa: ");
+	printf("\nCho biet ten xe can xoa: ");
 	fflush(stdin);
 	gets(c);
 	int bienLap,BienKT=0;
-	for(int i=0 ; i<SoLoai ; i++)
+	for(int i=0 ; i < n ; i++)
 	{
-		if(strcmp(tu[i].DoUong,c)==0)
+		if(strcmp(a[i].Ten,c)==0)
 		{
-			for (bienLap=i;bienLap<SoLoai;i++)
+			for (bienLap=i; bienLap < n; i++)
 			{
-				tu[bienLap]=tu[bienLap+1];
-				SoLoai--;
+				a[bienLap]=a[bienLap+1];
+				n--;
 			}
 			printf("Da xoa xong");
 			BienKT++;
@@ -88,249 +129,113 @@ void XoaMotThucUong(THUCUONG tu[], int SoLoai)
 	}
 	if(BienKT==0)
 	{
-		printf("Thuc uong ko ton tai");
+		printf("Xe ko ton tai");
 	}
-}
-int TimThucUong(THUCUONG tu[], int SoLoai)
-{
-	fflush(stdin);
-	char ten[50];
-	for(int i=0;i<SoLoai;i++)
-	{
-		if(strcmp(tu[i].DoUong,ten)==0)
-		{
-			return i;
-			break;
-		}
-	}
-	return -1;
-}
-void SapXep(THUCUONG tu[], int SoLoai)
-{
-	int temp;
-	for(int i=0;i<SoLoai-1;i++)
-	{
-		for(int j=i+1;j<SoLoai;j++)
-		{
-			if(tu[i].SoLuong < tu[j].SoLuong)
-			{
-				temp=tu[i].SoLuong;
-				tu[i].SoLuong=tu[j].SoLuong;
-				tu[j].SoLuong=temp;
-			}
-		}
-	}
-}
-void hienthiThongtinTheoChieuNgang(THUCUONG tu[], int SoLoai)
-{
-	printf("	||%-20s ||%-20s ||%-20s ||%-30s \n", "DO UONG", "GIA SAN PHAM", "SIZE", "SO LUONG" );
-	for (int i=0; i<SoLoai; i++)
-	{
-		printf("	||%-20s ||%-20d ||%-20s ||%-30d \n",tu[i].DoUong,tu[i].GiaSanPham,tu[i].size,tu[i].SoLuong);
-	}
-}
-void ThanhToan(THUCUONG tu[], int SoLoai)
-{
-	int Tong=0;
-	int s;
-	SapXep(tu,SoLoai);
-	int vt = 0;//vi tri bat dau dem;
-	for(int i = vt; i<SoLoai; i = vt)
-	{
-		int dem = 1;
-		int Tong = tu[i].SoLuong * tu[i].GiaSanPham;
-		for(int j = vt + 1; j < SoLoai; j++)
-		{
-			if(tu[i].DoUong == tu[j].DoUong)
-			{
-				dem++;
-				Tong = Tong + tu[j].SoLuong * tu[j].GiaSanPham;
-			}
-			else
-			{
-				break;
-			}
-		}
-		if(dem>0)
-		{
-			printf("\nTien cua do uong %s la %d",tu[vt].DoUong,Tong);
-			vt = vt + dem; //vi tri bat dau moi;
-		}
-	}
-}
-void LuuFile(THUCUONG *tu, int SoLoai,char fileName[]) 
-{
-	FILE* fp;
-	fp = fopen (fileName,"w");
-	int i;
-	fprintf(fp,"||	TEN DO UONG      SO LUONG               SIZE                 GIA SAN PHAM     ||\n\n");
-	for(i = 0; i < SoLoai; i++) 
-	{
-		THUCUONG x = tu[i];
-		fprintf(fp, "||	%-16s %-22d %-20s %-16d ||\n\n",x.DoUong,x.SoLuong,x.size,x.GiaSanPham	);
-	}
-	fprintf(fp,"	---------------------------------------------------------------------------------------\n");
-	fclose(fp);
-}
-void menu()
-{
-	THUCUONG tu;
-	int k,SoLoai;
-	char ten[50];
-	char fileName[] = "thuc_uong.txt";
-	int chon, flat=1;
-	bool DaNhap = false;
-	do
-	{
-		printf("\n\t	Nhap So luong loai Thuc Uong Can Dung: ");
-		scanf("%d",&SoLoai);
-	}
-	while(SoLoai<=0);
-	while(true && flat)
-	{
-		printf("                                                                     \n");
-		printf("          --------------------------------------------------          \n");
-		printf("        *                                                    *         \n");
-		printf("       *                                                      *         \n");
-		printf("      *                     QUAN LY QUAN COFFE                 *        \n");
-		printf("     *             1. Nhap Thong Tin Do Uong.                   *         \n");
-		printf("    *              2. Them Do Uong.                              *         \n");
-		printf("    *              3. Xoa Do Uong.                               *         \n");
-		printf("     *             4. Thong Ke Do Uong.                         *         \n");
-		printf("      *            5. Thanh Toan.                              *        \n");
-		printf("       *           6. Ghi File.                               *         \n");
-		printf("         *         7. Thoat Chuong Trinh.                   *         \n");
-		printf("           *                                              *         \n");
-		printf("             *                                          *         \n");
-		printf("               *--------------------------------------*         \n");
-		printf(" ----------------------------------------------------------------------------\n");
-		printf("	Ban Chon: ");
-		scanf("%d",&chon);
-		switch (chon)
-		{
-			case 1:
-			{
-				THUCUONG tu[100];
-     			printf ("\n\tNhap Thong Tin Thuc Uong");
-				NhapDanhSachThucUong(tu,SoLoai);
-				XuatDanhSachThucUong(tu,SoLoai);
-				DaNhap = true;
-				break;
-			}
-			case 2:
-			{
-				if(DaNhap)
-				{
-					THUCUONG x;
-					NhapThucUong(x);
-					THUCUONG tu[100];
-					ThemThucUong(tu,SoLoai,x,k);
-					printf("\ndanh sach thuc uong sau khi them la :");
-					XuatDanhSachThucUong(tu,SoLoai);
-				}
-				else 
-				{
-					printf("	LUU Y: Quy Khach Nen Nhap thong tin cho thuc uong truoc!\n");
-					printf("\t\t\t    MOI QUY KHACH CHON LAI\n");
-				}
-				break;
-			}
-			case 3:
-			{
-				if(DaNhap)
-				{
-					THUCUONG tu[100];
-					XoaMotThucUong(tu,SoLoai);
-					break;
-				}
-				else
-				{
-					printf("	LUU Y: Quy Khach Nen Nhap thong tin cho thuc uong truoc!\n");
-					printf("\t\t\t    MOI QUY KHACH CHON LAI\n");
-				}
-					break;
-			}
-			case 4:{
-				if(DaNhap)
-				{
-					printf("\n\tnhap ten thuc uong can tim: ");
-					fflush(stdin);
-					gets(ten);
-					THUCUONG tu[100];
-					int b=TimThucUong(tu,SoLoai);
-					if(TimThucUong(tu,SoLoai)==-1)
-						printf("\nKhong tim thay thuc uong: %s",ten);
-					else
-						printf("\nTim thay thuc uong thu %d",b+1);
-					}
-				else
-				{
-					printf("	LUU Y: Quy Khach Nen Nhap thong tin cho thuc uong truoc!\n");
-					printf("\t\t\t    MOI QUY KHACH CHON LAI\n");
-				}
-				break;
-			}
-			case 5:
-			{
-				if (DaNhap)
-				{
-					THUCUONG tu[100];
-			  	    
-			  	    hienthiThongtinTheoChieuNgang(tu,SoLoai);
-				}
-				else
-				{
-					printf("	LUU Y: Quy Khach Nen Nhap thong tin cho do uong truoc!\n");
-					printf("\t\t\t    MOI QUY KHACH CHON LAI\n");
-				}
-				break;
-			}
-			case 6:
-			{
-				if (DaNhap){
-					THUCUONG tu[100];
-					ThanhToan(tu,SoLoai);
-				}
-				else
-				{
-					printf("	LUU Y: Quy Khach Nen Nhap thong tin cho do uong truoc!\n");
-					printf("\t\t\t    MOI QUY KHACH CHON LAI\n");
-				}
-				break;
-			}
-			case 7:
-			{
-				if (DaNhap)
-				{
-					THUCUONG tu[100];
-					LuuFile(tu,SoLoai,fileName);
-					printf ("	Luu File Thanh Cong");
-				}
-				else
-				{
-					printf("	LUU Y: Quy Khach Nen Nhap thong tin cho do uong truoc!\n");
-					printf("\t\t\t    MOI QUY KHACH CHON LAI\n");
-				}
-				break;
-			}
-			case 8:
-			{
-				flat = 0;
-				break;
-			}
-			default: 
-			{
-				printf("\nKhong co chuc nang nay");
-				printf("\t\t\t    MOI QUY KHACH CHON LAI\n");
-				break;
-			}
-		}
-	}
-}
-int main()
-{
-	system("Color 72");
-	printf ("\nCHAO MUNG QUY KHACH DEN VOI COFFEE IT CUA CHUNG TOI CHUC QUY KHACH NGON MIENG !\n ");
-	menu();
 }
 
+void xuatFile(XE a[], int n, char fileName[]){
+    FILE * fp;
+    fp = fopen(fileName,"w");
+    fprintf(fp,"||	TEN      THE LOAI               GIA TIEN                 NAM     ||\n\n");
+    for(int i = 0; i < n; i++){
+        fprintf(fp, "||	%-16s %-22s %-20d %-16d ||\n\n", a[i].Ten, a[i].TheLoai, a[i].GiaTien, a[i].Nam);
+    }
+    fprintf(fp,"	---------------------------------------------------------------------------------------\n");
+    fclose(fp);
+}
+int Menu(){
+	int key;
+    char fileName[] = "DSXE.txt";
+    int x,k,n;
+    bool daNhap = false;
+    do{
+        printf("\nNhap so luong XE: "); scanf("%d", &n);
+    }while(n <= 0);
+    XE a[n];
+while(true){
+        system("cls");
+        printf(" \n\n\n\n\n\n");
+        printf("                                **********************************************\n");
+        printf("                                *        CHUONG TRINH QUAN LY XE             *\n");
+        printf("                                *      1. Nhap danh sach xe                  *\n");
+        printf("                                *      2. Xuat danh sach xe                  *\n");
+        printf("                                *      3. Sap xep va hien thi danh sach xe   *\n");
+        printf("                             	*      4. Xoa mot xe                         *\n");
+        printf("                             	*      5. Xuat DS XE ra file                 *\n");
+        printf("                             	*      6. Tim kiem thong tin xe              *\n");
+        printf("                                *      0. Thoat                              *\n");
+        printf("                                **********************************************\n");
+        printf("                                ****         Nhap lua chon cua ban        ****\n");
+        scanf("%d",&key);
+        switch(key){
+            case 1:
+                printf("\nBan da chon nhap DS xe!");
+                NhapXe(a, n);
+                printf("\nBan da nhap thanh cong!");
+                daNhap = true;
+                printf("\nBam phim bat ky de tiep tuc!");
+                getch();
+                break;
+            case 2:
+                if(daNhap){
+                    printf("\nBan da chon xuat DS xe!");
+                    XuatXe(a,n);
+                }else{
+                    printf("\nNhap DS XE truoc!!!!");
+                }
+                printf("\nBam phim bat ky de tiep tuc!");
+                getch();
+                break;
+            case 3:
+                if(daNhap){
+                    printf("\nBan da chon sap xep va hien thi!\n");
+                    SapXepvaHienThi(a, n);
+                }else{
+                    printf("\nNhap DS XE truoc!!!!");
+                }
+                printf("\nBam phim bat ky de tiep tuc!");
+                getch();
+                break;
+            case 4:
+                if(daNhap){
+                    printf("\nBan da chon xoa xe!");
+                    XoaMotXe(a, n);	
+                }else{
+                    printf("\nNhap DS XE truoc!!!!");
+                }
+                printf("\nBam phim bat ky de tiep tuc!");
+                getch();
+                break;
+            case 5:
+                if(daNhap){
+                    printf("\nBan da chon xuat DS XE ra file!");
+                    xuatFile(a, n, fileName);
+                }else{
+                    printf("\nNhap DS SV truoc!!!!");
+                }
+                printf("\nGhi DSSV thanh cong vao file %s!", fileName);
+                printf("\nBam phim bat ky de tiep tuc!");
+                getch();
+                break;
+            case 6:
+            	if(daNhap){
+            		printf("\nBan da chon tim kiem thong tin xe");
+            		TimXeTheoLoai(a, n);
+            	}else{
+            		printf("\nNhap DS SV truoc!!!!");
+				}
+				printf("\nBam phim bat ky de tiep tuc!");
+                getch();
+                break;
+            case 0:
+                printf("\nBan da chon thoat chuong trinh!");
+                getch();
+                return 0;
+            default:
+                printf("\nKhong co chuc nang nay!");
+                printf("\nBam phim bat ky de tiep tuc!");
+                getch();
+                break;
+        }
+    }
+}

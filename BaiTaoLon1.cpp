@@ -18,7 +18,6 @@ void xuat(XE xe);
 void XuatXe( XE a[], int n);
 void SapXepvaHienThi (XE a[], int n);
 void TimXeTheoLoai (XE a[], int n);
-void ThemXe(XE a[] ,int &n, XE &x, int k);
 void XoaMotXe(XE a[], int n);
 void xuatFile(XE a[], int n, char fileName[]);
 int Menu();
@@ -100,23 +99,13 @@ void TimXeTheoLoai (XE a[], int n){
     int i = 0, dem = 0;
 	for (i = 0; i < n; i++) {
 		if (strcmp(a[i].TheLoai, TheLoai) == 0) {
-			XuatXe(a, n);
+			xuat(a[i]);
 			dem++;
 		}
 	}
 	if (dem == 0) {
 		printf("\nKhong co chiec xe thuoc the loai nay\n");
 	}
-}
-
-void ThemXe(XE a[] ,int &n, XE &x, int k){
-	int i;
-	for( i = n; i > k ;i--)
-	{
-		a[i]=a[i-1];
-	}
-	a[k]=x;
-	n++;
 }
 
 void XoaMotXe(XE a[], int n){
@@ -171,10 +160,9 @@ while(true){
         printf("                                *      1. Nhap danh sach xe                  *\n");
         printf("                                *      2. Xuat danh sach xe                  *\n");
         printf("                                *      3. Sap xep va hien thi danh sach xe   *\n");
-        printf("                                *      4. Them xe                            *\n");
-        printf("                             	*      5. Xoa mot xe                         *\n");
-        printf("                             	*      6. Xuat DS XE ra file                 *\n");
-        printf("                             	*      7. Tim kiem thong tin xe              *\n");
+        printf("                             	*      4. Xoa mot xe                         *\n");
+        printf("                             	*      5. Xuat DS XE ra file                 *\n");
+        printf("                             	*      6. Tim kiem thong tin xe              *\n");
         printf("                                *      0. Thoat                              *\n");
         printf("                                **********************************************\n");
         printf("                                ****         Nhap lua chon cua ban        ****\n");
@@ -210,19 +198,6 @@ while(true){
                 break;
             case 4:
                 if(daNhap){
-                    XE x;
-					NhapDuLieu(x);
-					XE a[100];
-					ThemXe(a,n,x,k);
-					printf("\nDanh sach xe sau khi them la :");
-                }else{
-                    printf("\nNhap DS XE truoc!!!!");
-                }
-                printf("\nBam phim bat ky de tiep tuc!");
-                getch();
-                break;
-            case 5:
-                if(daNhap){
                     printf("\nBan da chon xoa xe!");
                     XoaMotXe(a, n);	
                 }else{
@@ -231,7 +206,7 @@ while(true){
                 printf("\nBam phim bat ky de tiep tuc!");
                 getch();
                 break;
-            case 6:
+            case 5:
                 if(daNhap){
                     printf("\nBan da chon xuat DS XE ra file!");
                     xuatFile(a, n, fileName);
@@ -242,7 +217,7 @@ while(true){
                 printf("\nBam phim bat ky de tiep tuc!");
                 getch();
                 break;
-            case 7:
+            case 6:
             	if(daNhap){
             		printf("\nBan da chon tim kiem thong tin xe");
             		TimXeTheoLoai(a, n);

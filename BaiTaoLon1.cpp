@@ -13,7 +13,7 @@ struct car_st{
 typedef car_st XE;
 
 void NhapDuLieu (car_st &xe);
-void nhapN( XE a[], int &SoLoai);
+void nhapN( XE a[], int SoLoai);
 void xuat(XE xe);
 void xuatN( XE a[], int SoLoai);
 void SapXepvaHienThi (XE a[], int SoLoai);
@@ -30,7 +30,7 @@ int main(){
 
 void NhapDuLieu (XE &xe){
         printf("\n+ Ten: ");
-	fflush(stdin);
+		fflush(stdin);
         gets (xe.Ten);
         printf("\n+ TheLoai: ");
         gets (xe.TheLoai);
@@ -41,7 +41,7 @@ void NhapDuLieu (XE &xe){
         fflush(stdin);
 }
 
-void nhapN( XE a[], int &SoLoai){
+void nhapN( XE a[], int SoLoai){
     printf("\n____________________________________\n");
     for(int i = 0; i < SoLoai; ++i){
         printf("\nNhap Xe thu %d:", i+1);
@@ -110,7 +110,7 @@ void TimXeTheoLoai (XE a[], int SoLoai){
 	}
 }
 
-void ThemXe(XE a[] ,int SoLoai, XE x, int k){
+void ThemXe(XE a[] ,int &SoLoai, XE &x, int k){
 	int i;
 	for( i = SoLoai; i > k ;i--)
 	{
@@ -213,8 +213,12 @@ while(true){
                 break;
             case 4:
                 if(daNhap){
-                    printf("\nBan da chon them xe!");
-                    ThemXe(a, SoLoai, x, k);
+                    XE x;
+					NhapDuLieu(x);
+					XE a[100];
+					ThemXe(a,SoLoai,x,k);
+					printf("\nDanh sach xe sau khi them la :");
+					xuatN(a, SoLoai);
                 }else{
                     printf("\nNhap DS XE truoc!!!!");
                 }
